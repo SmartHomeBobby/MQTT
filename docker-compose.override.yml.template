@@ -32,3 +32,11 @@ services:
         echo '✓ Starting Mosquitto...' &&
         exec /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
       "
+
+  mqttui:
+    ports:
+      - "8482:5000"
+    environment:
+      - MQTT_BROKER=tower
+      - MQTT_USERNAME=smarthomebobby
+      - MQTT_PASSWORD=yourPassword123
