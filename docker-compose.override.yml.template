@@ -24,7 +24,7 @@ services:
         echo '✓ mosquitto.conf rewritten' &&
         
         touch /mosquitto/config/passwd &&
-        mosquitto_passwd -b /mosquitto/config/passwd smarthomebobby deinPasswort123 &&
+        mosquitto_passwd -b /mosquitto/config/passwd smarthomebobby yourPassword123 &&
         chmod 600 /mosquitto/config/passwd &&
         chown 1883:1883 /mosquitto/config/passwd &&
         echo '✓ passwd rewritten' &&
