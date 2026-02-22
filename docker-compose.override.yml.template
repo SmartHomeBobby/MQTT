@@ -7,22 +7,22 @@ services:
       - /mnt/user/appdata/SmartHomeBobby/mqtt/log:/mosquitto/log
     environment:
       - TZ=Europe/Berlin
+      - RUN_INSECURE_MQTT_SERVER=1
     entrypoint: |
       /bin/sh -c "
         echo '=== SmartHomeBobby MQTT Init ===' &&
         
         if [ ! -f /mosquitto/config/mosquitto.conf ]; then
-          printf '%s\n' \
-            'persistence true' \
-            'persistence_location /mosquitto/data/' \
-            'log_dest file /mosquitto/log/mosquitto.log' \
-            'log_type all' \
-            'log_timestamp true' \
-            '' \
-            'listener 1883' \
-            'protocol mqtt' \
-            'allow_anonymous false' \
-            'password_file /mosquitto/config/passwd' > /mosquitto/config/mosquitto.conf
+          echo 'persistence true' > /mosquitto/config/mosquitto.conf
+          echo 'persistence_location /mosquitto/data/' >> /mosquitto/config/mosquitto.conf
+          echo 'log_dest file /mosquitto/log/mosquitto.log' >> /mosquitto/config/mosquitto.conf
+          echo 'log_type all' >> /mosquitto/config/mosquitto.conf
+          echo 'log_timestamp true' >> /mosquitto/config/mosquitto.conf
+          echo '' >> /mosquitto/config/mosquitto.conf
+          echo 'listener 1883' >> /mosquitto/config/mosquitto.conf
+          echo 'protocol mqtt' >> /mosquitto/config/mosquitto.conf
+          echo 'allow_anonymous false' >> /mosquitto/config/mosquitto.conf
+          echo 'password_file /mosquitto/config/passwd' >> /mosquitto/config/mosquitto.conf
           echo '✓ mosquitto.conf created';
         fi &&
         
