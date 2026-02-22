@@ -11,26 +11,23 @@ services:
       /bin/sh -c "
         echo '=== SmartHomeBobby MQTT Init ===' &&
         
-        if [ ! -f /mosquitto/config/mosquitto.conf ]; then
-          echo 'persistence true' > /mosquitto/config/mosquitto.conf
-          echo 'persistence_location /mosquitto/data/' >> /mosquitto/config/mosquitto.conf
-          echo 'log_dest file /mosquitto/log/mosquitto.log' >> /mosquitto/config/mosquitto.conf
-          echo 'log_type all' >> /mosquitto/config/mosquitto.conf
-          echo 'log_timestamp true' >> /mosquitto/config/mosquitto.conf
-          echo '' >> /mosquitto/config/mosquitto.conf
-          echo 'listener 1883' >> /mosquitto/config/mosquitto.conf
-          echo 'protocol mqtt' >> /mosquitto/config/mosquitto.conf
-          echo 'allow_anonymous false' >> /mosquitto/config/mosquitto.conf
-          echo 'password_file /mosquitto/config/passwd' >> /mosquitto/config/mosquitto.conf
-          echo '✓ mosquitto.conf created';
-        fi &&
+        echo 'persistence true' > /mosquitto/config/mosquitto.conf &&
+        echo 'persistence_location /mosquitto/data/' >> /mosquitto/config/mosquitto.conf &&
+        echo 'log_dest file /mosquitto/log/mosquitto.log' >> /mosquitto/config/mosquitto.conf &&
+        echo 'log_type all' >> /mosquitto/config/mosquitto.conf &&
+        echo 'log_timestamp true' >> /mosquitto/config/mosquitto.conf &&
+        echo '' >> /mosquitto/config/mosquitto.conf &&
+        echo 'listener 1883' >> /mosquitto/config/mosquitto.conf &&
+        echo 'protocol mqtt' >> /mosquitto/config/mosquitto.conf &&
+        echo 'allow_anonymous false' >> /mosquitto/config/mosquitto.conf &&
+        echo 'password_file /mosquitto/config/passwd' >> /mosquitto/config/mosquitto.conf &&
+        echo '✓ mosquitto.conf rewritten' &&
         
-        if [ ! -f /mosquitto/config/passwd ]; then
-          echo 'smarthomebobby:$(echo -n \"yourPassword123\" | openssl passwd -6 -stdin)' > /mosquitto/config/passwd &&
-          chmod 600 /mosquitto/config/passwd &&
-          chown 1883:1883 /mosquitto/config/passwd &&
-          echo '✓ passwd created';
-        fi &&
+        touch /mosquitto/config/passwd &&
+        mosquitto_passwd -b /mosquitto/config/passwd smarthomebobby yourPassword123 &&
+        chmod 600 /mosquitto/config/passwd &&
+        chown 1883:1883 /mosquitto/config/passwd &&
+        echo '✓ passwd rewritten' &&
         
         echo '✓ Starting Mosquitto...' &&
         exec /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
