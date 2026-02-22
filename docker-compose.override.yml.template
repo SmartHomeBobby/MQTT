@@ -12,18 +12,17 @@ services:
         echo '=== SmartHomeBobby MQTT Init ===' &&
         
         if [ ! -f /mosquitto/config/mosquitto.conf ]; then
-          cat > /mosquitto/config/mosquitto.conf << 'MOSQUITTO_EOF'
-persistence true
-persistence_location /mosquitto/data/
-log_dest file /mosquitto/log/mosquitto.log
-log_type all
-log_timestamp true
-
-listener 1883
-protocol mqtt
-allow_anonymous false
-password_file /mosquitto/config/passwd
-MOSQUITTO_EOF
+          printf '%s\n' \
+            'persistence true' \
+            'persistence_location /mosquitto/data/' \
+            'log_dest file /mosquitto/log/mosquitto.log' \
+            'log_type all' \
+            'log_timestamp true' \
+            '' \
+            'listener 1883' \
+            'protocol mqtt' \
+            'allow_anonymous false' \
+            'password_file /mosquitto/config/passwd' > /mosquitto/config/mosquitto.conf
           echo '✓ mosquitto.conf created';
         fi &&
         
