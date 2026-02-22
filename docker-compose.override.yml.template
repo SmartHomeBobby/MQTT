@@ -3,33 +3,37 @@ services:
     ports:
       - "1883:1883"
     volumes:
-      - /mnt/user/appdata/mqtt/data:/mosquitto/data
-      - /mnt/user/appdata/mqtt/log:/mosquitto/log
+      - /mnt/user/appdata/SmartHomeBobby/mqtt/data:/mosquitto/data
+      - /mnt/user/appdata/SmartHomeBobby/mqtt/log:/mosquitto/log
     environment:
       - TZ=Europe/Berlin
-    entrypoint: >
+    entrypoint: |
       /bin/sh -c "
         echo '=== SmartHomeBobby MQTT Init ===' &&
+        
         if [ ! -f /mosquitto/config/mosquitto.conf ]; then
-          cat > /mosquitto/config/mosquitto.conf << 'EOF'
+          cat > /mosquitto/config/mosquitto.conf << 'MOSQUITTO_EOF'
 persistence true
 persistence_location /mosquitto/data/
 log_dest file /mosquitto/log/mosquitto.log
 log_type all
 log_timestamp true
+
 listener 1883
 protocol mqtt
 allow_anonymous false
 password_file /mosquitto/config/passwd
-EOF
-          echo '✓ Config created';
+MOSQUITTO_EOF
+          echo '✓ mosquitto.conf created';
         fi &&
+        
         if [ ! -f /mosquitto/config/passwd ]; then
           echo 'smarthomebobby:$(echo -n \"yourPassword123\" | openssl passwd -6 -stdin)' > /mosquitto/config/passwd &&
           chmod 600 /mosquitto/config/passwd &&
           chown 1883:1883 /mosquitto/config/passwd &&
-          echo '✓ Password created';
+          echo '✓ passwd created';
         fi &&
+        
         echo '✓ Starting Mosquitto...' &&
         exec /docker-entrypoint.sh mosquitto -c /mosquitto/config/mosquitto.conf
       "
