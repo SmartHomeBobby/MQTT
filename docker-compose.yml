@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: cmccambridge/mosquitto-unraid:latest
+    container_name: smarthomebobby-mqtt
+    restart: unless-stopped
+    networks:
+      - smarthomebobby-net
+
+networks:
+  smarthomebobby-net:
+    driver: bridge
