@@ -7,7 +7,6 @@ services:
       - /mnt/user/appdata/SmartHomeBobby/mqtt/log:/mosquitto/log
     environment:
       - TZ=Europe/Berlin
-      - RUN_INSECURE_MQTT_SERVER=1
     entrypoint: |
       /bin/sh -c "
         echo '=== SmartHomeBobby MQTT Init ===' &&
@@ -34,5 +33,5 @@ services:
         fi &&
         
         echo '✓ Starting Mosquitto...' &&
-        exec /docker-entrypoint.sh mosquitto -c /mosquitto/config/mosquitto.conf
+        exec /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
       "
