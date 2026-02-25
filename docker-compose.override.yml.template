@@ -21,6 +21,9 @@ services:
         echo 'protocol mqtt' >> /mosquitto/config/mosquitto.conf &&
         echo 'allow_anonymous false' >> /mosquitto/config/mosquitto.conf &&
         echo 'password_file /mosquitto/config/passwd' >> /mosquitto/config/mosquitto.conf &&
+        echo 'max_queued_messages 1000' >> /mosquitto/config/mosquitto.conf &&
+        echo 'max_queued_bytes 1048576' >> /mosquitto/config/mosquitto.conf &&
+        echo 'upgrade_outgoing_qos true' >> /mosquitto/config/mosquitto.conf &&
         echo '✓ mosquitto.conf rewritten' &&
         
         touch /mosquitto/config/passwd &&
